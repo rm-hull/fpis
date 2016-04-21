@@ -5,7 +5,7 @@ class Ex2Spec extends FunSpec with BeforeAndAfter {
   
   describe( "Ex2.1") {
     it("should yield fibonacci sequence") {
-      assert((0 to 10).map(n => Ex2.fib(n)) == List(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55))
+      assert((0 to 10).map(n => Ex2.fib(n)) == Vector(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55))
     }
   }
   

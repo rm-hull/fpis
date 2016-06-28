@@ -14,18 +14,18 @@ class Ex3Spec extends FunSpec with BeforeAndAfter {
         case _ => 101
       }
       
-      assert(x == 3)
+      assert(x === 3)
     }
   }
   
   describe("Ex3.2") {
     
     it("should return Nil when empty") {
-      assert(List.tail(Nil) == Nil)
+      assert(List.tail(Nil) === Nil)
     }
     
     it("should drop first element on non-empty list") {
-      assert(List.tail(List(1,2,3,4)) == List(2,3,4))
+      assert(List.tail(List(1,2,3,4)) === List(2,3,4))
     }
   }
   
@@ -33,49 +33,49 @@ class Ex3Spec extends FunSpec with BeforeAndAfter {
     
     it("should replace the head item on non-empty list") {
       val orig = List(1,2,3,4)
-      assert(List.setHead(99, orig) == List(99,2,3,4))
+      assert(List.setHead(99, orig) === List(99,2,3,4))
     }
     
     it("should not alter the existing list") {
       val orig = List(1,2,3,4)
       val newList = List.setHead(99, orig)
-      assert(orig != newList)
+      assert(orig !== newList)
     }
     
     it("should set the head on an empty list") {
-      assert(List.setHead(87, Nil) == List(87))
+      assert(List.setHead(87, Nil) === List(87))
     }
   }
   
   describe("Ex3.4") {
     
     it("should not drop anything when n=0") {
-      assert(List.drop(List(1,2,3),0) == List(1,2,3))
+      assert(List.drop(List(1,2,3),0) === List(1,2,3))
     }
     
     it("should yield Nil when list is exhausted") {
-      assert(List.drop(List(1,2,3),7) == Nil)
+      assert(List.drop(List(1,2,3),7) === Nil)
     }
     
     it("should drop first two elements") {
-      assert(List.drop(List(1,2,3),2) == List(3))
+      assert(List.drop(List(1,2,3),2) === List(3))
     }
     
     it("should implement generalized tail semantics") {
       val xs = List(4,2,1,8,3)
-      assert(List.tail(xs) == List.tail_v2(xs))
+      assert(List.tail(xs) === List.tail_v2(xs))
     }
   }
   
   describe("Ex3.5") {
     def isEven(n: Int) = n % 2 == 0
       
-    it("should yield original list when exhaused and nothing matched the predicate") {
-      assert(List.dropWhile(List(1,1,3,5,9,13), isEven) == List(1,1,3,5,9,13))
+    it("should yield original list when exhausted and nothing matched the predicate") {
+      assert(List.dropWhile(List(1,1,3,5,9,13), isEven) === List(1,1,3,5,9,13))
     }
     
     it("should yield partial list when predicate matches") {
-      assert(List.dropWhile(List(2,2,4,5,9,13), isEven) == List(5,9,13))
+      assert(List.dropWhile(List(2,2,4,5,9,13), isEven) === List(5,9,13))
     }
   }
 }

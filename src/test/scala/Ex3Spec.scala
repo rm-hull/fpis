@@ -1,5 +1,7 @@
 import org.scalatest._
 
+import scala.collection.immutable.Range.Inclusive
+
 
 class Ex3Spec extends FunSpec with BeforeAndAfter {
   
@@ -78,4 +80,100 @@ class Ex3Spec extends FunSpec with BeforeAndAfter {
       assert(List.dropWhile(List(2,2,4,5,9,13), isEven) === List(5,9,13))
     }
   }
+
+  describe("Ex3.6") {
+
+    it("should yield nil when empty list provided") {
+      assert(List.init(List()) === Nil)
+    }
+
+    it("should yield all but last element") {
+      assert(List.init(List(1,2,3,4)) === List(1,2,3))
+    }
+  }
+
+  describe("Ex3.8") {
+    it("should reconstruct the list") {
+      assert(List.foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)) === List(1,2,3))
+    }
+  }
+
+  describe("Ex3.9") {
+    it("should count zero for an empty list") {
+      assert(List.length(List()) === 0)
+    }
+
+    it("should count correctly for a non-empty list") {
+      assert(List.length(List(4,3,1,4)) === 4)
+    }
+  }
+
+  describe("Ex3.10") {
+    it("should return zero for empty list") {
+      assert(List.sum3(List()) === 0)
+    }
+
+    it("should return correct sum for large-ish list") {
+      assert(List.sum3(List(1,2,3,4,5,6,7,8,9,10,11,12,13,14)) === 105)
+    }
+  }
+
+  describe("Ex3.11") {
+
+    it("should return correct product for non-empty list") {
+      assert(List.product3(List(1,2,3,4,5)) === 120)
+    }
+
+    it("should count zero for an empty list") {
+      assert(List.length3(List()) === 0)
+    }
+
+    it("should count correctly for a non-empty list") {
+      assert(List.length3(List(4,3,1,4)) === 4)
+    }
+  }
+
+  describe("Ex3.12") {
+    it("should reverse a non-empty list") {
+      assert(List.reverse(List(1,2,3)) === List(3,2,1))
+    }
+  }
+
+  describe("Ex3.14") {
+    it("should append two lists") {
+      assert(List.append(List(1,2,3),List(4,5,6)) === List(1,2,3,4,5,6))
+    }
+  }
+
+  describe("Ex3.15") {
+    it("should flatten lists of lists") {
+      assert(List.flatten(List(List(1,2),List(3),List(4,5,6))) === List(1,2,3,4,5,6))
+    }
+  }
+
+  describe("Ex3.16") {
+    it("should add 1 to each element") {
+      assert(List.add1(List(1,2,3,4)) === List(2,3,4,5))
+    }
+  }
+
+  describe("Ex3.17") {
+    it("should change doubles -> string for each element") {
+      assert(List.dbl2str(List(1.1,2.2,3.3,4.4)) === List("1.1","2.2","3.3","4.4"))
+    }
+  }
+
+  describe("Ex3.18") {
+    it("should add 5 to each element") {
+      assert(List.map(List(1,2,3))(_ + 5) === List(6,7,8))
+    }
+  }
+
+  describe("Ex3.19") {
+    it("should filter odd numbers") {
+      assert(List.filter(List(1,2,3,4,5,6,7))(_ % 2 == 1) === List(1,3,5,7))
+    }
+  }
+
+
 }

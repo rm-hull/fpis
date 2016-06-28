@@ -175,5 +175,27 @@ class Ex3Spec extends FunSpec with BeforeAndAfter {
     }
   }
 
+  describe("Ex3.20") {
+    it("should flatmap that shit") {
+      assert(List.flatMap(List(1,2,3))(i => List(i,i)) === List(1,1,2,2,3,3))
+    }
+  }
 
+  describe("Ex3.21") {
+    it("should filter odd numbers") {
+      assert(List.filter2(List(1,2,3,4,5,6,7))(_ % 2 == 1) === List(1,3,5,7))
+    }
+  }
+
+  describe("Ex3.22") {
+    it("should sum pair-wise") {
+      assert(List.sumPairs(List(1,2,3),List(4,5,6)) === List(5,7,9))
+    }
+  }
+
+  describe("Ex3.23") {
+    it("should sum zipWith") {
+      assert(List.zipWith(List(1,2,3),List(4,5,6))(_ + _) === List(5,7,9))
+    }
+  }
 }

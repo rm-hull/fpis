@@ -240,4 +240,48 @@ object List {
     */
   def filter[A](as: List[A])(f: A => Boolean): List[A] =
     foldRight(as, Nil: List[A])((a, b) => if (f(a)) Cons(a, b) else b)
+
+  /**
+    * Exercise 3.20
+    * =============
+    * Write a function `flatMap` that works like `map` except that the function
+    * given will return a list instead of a single result, and that list should
+    * be inserted into the final resulting list.
+    */
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] =
+    foldRight(as, Nil: List[B])((a, b) => append(f(a), b)) // or flatten(map(as)(f))
+
+  /**
+    * Exercise 3.21
+    * =============
+    * Use `flatMap` to implement `filter`
+    */
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] =
+    flatMap(as)(a => if (f(a)) List(a) else Nil)
+
+  /**
+    * Exercise 3.22
+    * =============
+    * Write a function that accepts two lists and constructs a new list by
+    * adding corresponding elements. For example, `List(1,2,3)` and
+    * `List(4,5,6)` becomes `List(5,7,9)`.
+    */
+  def sumPairs(a1: List[Int], a2: List[Int]): List[Int] = (a1, a2) match {
+    case (Nil, _) => Nil
+    case (_, Nil) => Nil
+    case (Cons(x, xs), Cons(y, ys)) => Cons(x + y, sumPairs(xs, ys))
+  }
+
+  /**
+    * Exercise 3.23
+    * =============
+    * Generalize the function you just wrote so that it's not specific to
+    * integers or addition.
+    */
+  def zipWith[A,B](a1: List[A], a2: List[A])(f: (A, A) => B): List[B] = (a1, a2) match {
+    case (Nil, _) => Nil
+    case (_, Nil) => Nil
+    case (Cons(x, xs), Cons(y, ys)) => Cons(f(x, y), zipWith(xs, ys)(f))
+  }
+
 }

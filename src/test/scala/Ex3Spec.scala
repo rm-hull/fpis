@@ -1,7 +1,5 @@
 import org.scalatest._
 
-import scala.collection.immutable.Range.Inclusive
-
 
 class Ex3Spec extends FunSpec with BeforeAndAfter {
   
@@ -196,6 +194,48 @@ class Ex3Spec extends FunSpec with BeforeAndAfter {
   describe("Ex3.23") {
     it("should sum zipWith") {
       assert(List.zipWith(List(1,2,3),List(4,5,6))(_ + _) === List(5,7,9))
+    }
+  }
+
+
+  describe("Ex3.25") {
+    it("should calc the number of tree nodes") {
+      assert(Tree.size(Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))) === 5)
+    }
+  }
+
+  describe("Ex3.26") {
+    it("should calc the max value") {
+      assert(Tree.maximum(Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))) === 4)
+    }
+  }
+
+  describe("Ex3.27") {
+    it("should calc the max depth") {
+      assert(Tree.depth(Branch(Branch(Leaf(2),Branch(Leaf(2),Leaf(3))),Leaf(4))) === 4)
+    }
+  }
+
+  describe("Ex3.28") {
+    it("should map all values") {
+      assert(Tree.map(Branch(Branch(Leaf(2),Branch(Leaf(2),Leaf(3))),Leaf(4)), (x: Int) => x * 2) ===
+        Branch(Branch(Leaf(4),Branch(Leaf(4),Leaf(6))),Leaf(8)))
+    }
+  }
+
+  describe("Ex3.29") {
+    it("should calc the number of tree nodes") {
+      assert(Tree.size2(Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))) === 5)
+    }
+    it("should calc the max value") {
+      assert(Tree.maximum2(Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))) === 4)
+    }
+    it("should calc the max depth") {
+      assert(Tree.depth2(Branch(Branch(Leaf(2),Branch(Leaf(2),Leaf(3))),Leaf(4))) === 4)
+    }
+    it("should map all values") {
+      assert(Tree.map2(Branch(Branch(Leaf(2),Branch(Leaf(2),Leaf(3))),Leaf(4)), (x: Int) => x * 2) ===
+        Branch(Branch(Leaf(4), Branch(Leaf(4), Leaf(6))), Leaf(8)))
     }
   }
 }

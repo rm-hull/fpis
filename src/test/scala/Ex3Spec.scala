@@ -1,5 +1,6 @@
 import org.scalatest._
 
+import ex3._
 
 class Ex3Spec extends FunSpec with BeforeAndAfter {
   

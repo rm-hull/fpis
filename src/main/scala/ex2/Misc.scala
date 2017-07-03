@@ -1,6 +1,6 @@
-import scala.annotation.tailrec
+package ex2
 
-object Ex2 {
+object Misc {
   
   /**
    * Exercise 2.1

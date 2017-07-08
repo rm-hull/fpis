@@ -85,7 +85,61 @@ sealed trait Stream[+A] {
     * Exercise 5.13: Use `unfold` to implement `map`, `take`, `takeWhile`,
     * `zipWith` (as in chapter 3), and `zipAll`
     */
-  def map2[B](f: A => B): Stream[B] = ???
+  def map2[B](f: A => B): Stream[B] =
+    Stream.unfold[B, Stream[A]](this) {
+      case Cons(h, t) => Some((f(h()), t()))
+      case _ => None
+    }
+
+  def take2(n: Int): Stream[A] =
+    Stream.unfold((this, n)) {
+      case (Cons(h, t), i) if i > 0 => Some((h(), (t(), i - 1)))
+      case _ => None
+    }
+
+  def takeWhile3(p: A => Boolean): Stream[A] =
+    Stream.unfold(this) {
+      case Cons(h, t) if p(h()) => Some((h(), t()))
+      case _ => None
+    }
+
+  def zipWith[B,C](other: Stream[B])(f: (A, B) => C): Stream[C] =
+    Stream.unfold((this, other)) {
+      case (Cons(h1, t1), Cons(h2, t2)) => Some((f(h1(), h2()), (t1(), t2())))
+      case _ => None
+    }
+
+  def zipAll[B](other: Stream[B]): Stream[(Option[A],Option[B])] =
+    Stream.unfold((this, other)) {
+      case (Cons(h1, t1), Cons(h2, t2)) => Some((Some(h1()), Some(h2())), (t1(), t2()))
+      case (Empty, Cons(h2, t2)) => Some((None, Some(h2())), (Empty, t2()))
+      case (Cons(h1, t1), Empty) => Some((Some(h1()), None), (t1(), Empty))
+      case _ => None
+    }
+
+  /**
+    * Exercise 5.14: Implement `startsWith` using functions you've written. It should check if
+    * one `Stream` is a prefix of another. For instance `Stream(1,2,3) startsWith Stream(1,2)`
+    * would be `true`.
+    */
+  def startsWith[A](s: Stream[A]): Boolean =
+    zipAll(s).takeWhile(_._2 != None).forAll {
+      case (h1, h2) => h1 == h2
+    }
+
+  /**
+    * Exercise 5.15: Implement `tails` using `unfold`. For a given `Stream`, `tails` returns the
+    * `Stream` of suffixes of the input sequence, starting with the original `Stream`. For example,
+    * given `Stream(1,2,3)`, it would return `Stream(Stream(1,2,3), Stream(2,3), Stream(3), Stream())`.
+    */
+  def tails: Stream[Stream[A]] =
+    Stream.unfold(this) {
+      case Cons(h, t) => Some((Stream.cons(h(), t()), t()))
+      case _ => None
+    } append(Stream(Empty))
+
+  def hasSubsequence[A](s: Stream[A]): Boolean =
+    tails.exists(_.startsWith(s))
 }
 
 case object Empty extends Stream[Nothing]

@@ -140,6 +140,17 @@ sealed trait Stream[+A] {
 
   def hasSubsequence[A](s: Stream[A]): Boolean =
     tails.exists(_.startsWith(s))
+
+  /**
+    * Generalize `tails` to the function `scanRight`, which is like a `foldRight`
+    * that returns a stream of intermediate results.
+    */
+  // Not quite correct as unfold works left-->right
+  def scanRight[B](z: => B)(f: (A, => B) => B): Stream[B] =
+    Stream.unfold(this) {
+      case Cons(h, t) => Some((Stream.cons(h(), t()).foldRight(z)(f), t()))
+      case _ => None
+    } append(Stream(z))
 }
 
 case object Empty extends Stream[Nothing]

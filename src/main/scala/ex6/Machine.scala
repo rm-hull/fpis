@@ -9,11 +9,11 @@ package ex6
   *
   * The rules of the machine are as follows:
   *   - Inserting a coin into a locked machine will cause it to unlock if there's
-  * any candy left.
+  *     any candy left.
   *   - Turning the knob on an unlocked machine will cause it to dispense candy
-  * and become locked.
+  *     and become locked.
   *   - Turning the knob on a locked machine or inserting a coin into an unlocked
-  * machine does nothing.
+  *     machine does nothing.
   *   - A machine that's out of candy ignores all inputs.
   *
   * The method `simulateMachine` should operate the machine based on the list of
@@ -22,14 +22,37 @@ package ex6
   * total of 4 candies are successfully bought, the output should be `(14, 1)`
   */
 
+import ex6.State._
+
 sealed trait Input
-
 case object Coin extends Input
-
 case object Turn extends Input
 
-case class Machine(locked: Boolean, candies: Int, coins: Int)
+case class Machine(locked: Boolean, candies: Int, coins: Int) {
+
+  def next(input: Input): Machine = (input, this) match {
+    case (_, Machine(_, 0, _)) => this
+    case (Coin, Machine(true, _, coins)) => copy(locked = false, coins = coins + 1)
+    case (Turn, Machine(false, candies, _)) => copy(locked = true, candies = candies - 1)
+    case (Turn, Machine(true, _, _)) => this
+    case (Coin, Machine(false, _, _)) => this
+  }
+}
 
 object Automaton {
-  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = ???
+  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] = {
+
+    // map over inputs & for each, run modify
+    val states: List[State[Machine, Unit]] = inputs.map {
+      i => modify[Machine](m => m.next(i))
+    }
+
+    for {
+      // Flip List[State[Machine, Unit]] <--> State[Machine, List[Unit]]
+      _ <- sequence(states)
+
+      // Get the machine from state
+      machine <- get
+    } yield (machine.coins, machine.candies)
+  }
 }

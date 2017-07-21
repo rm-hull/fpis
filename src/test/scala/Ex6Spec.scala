@@ -127,4 +127,48 @@ class Ex6Spec extends FunSpec with BeforeAndAfter {
       assert(State.sequence(List.fill(5)(nni)).run(SequentialRNG(-2))._1 === List(1, 0, 0, 1, 2))
     }
   }
+
+  describe("Ex6.11") {
+    it("should buy 4 candies") {
+      val machine = Machine(locked = true, coins = 10, candies = 5)
+      val inputs = List(Coin, Turn, Coin, Turn, Coin, Turn, Coin, Turn)
+      assert(Automaton.simulateMachine(inputs).run(machine)._1 === (14, 1))
+    }
+
+    it("should not buy anything when empty") {
+      val machine = Machine(locked = true, coins = 10, candies = 0)
+      val inputs = List(Coin, Turn, Coin, Turn, Coin, Turn, Coin, Turn)
+      assert(Automaton.simulateMachine(inputs).run(machine)._1 === (10, 0))
+    }
+
+    it("should lock if turning knob on unlocked machine") {
+      val machine = Machine(locked = false, coins = 10, candies = 5)
+      val inputs = List(Turn)
+      assert(Automaton.simulateMachine(inputs).run(machine)._2 === Machine(locked = true, 4, 10))
+    }
+
+    it("should unlock if inserting coin in locked machine") {
+      val machine = Machine(locked = true, coins = 10, candies = 5)
+      val inputs = List(Coin)
+      assert(Automaton.simulateMachine(inputs).run(machine)._2 === Machine(locked = false, 5, 11))
+    }
+
+    it("should do nothing if inserting coin in unlocked machine") {
+      val machine = Machine(locked = false, coins = 10, candies = 5)
+      val inputs = List(Coin)
+      assert(Automaton.simulateMachine(inputs).run(machine)._2 === machine)
+    }
+
+    it("should do nothing if turning knob on locked machine") {
+      val machine = Machine(locked = true, coins = 10, candies = 5)
+      val inputs = List(Turn)
+      assert(Automaton.simulateMachine(inputs).run(machine)._2 === machine)
+    }
+
+    it("should ignore all imports if out of candy") {
+      val machine = Machine(locked = false, coins = 10, candies = 0)
+      val inputs = List(Coin, Turn, Turn, Coin)
+      assert(Automaton.simulateMachine(inputs).run(machine)._2 === machine)
+    }
+  }
 }

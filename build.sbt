@@ -2,10 +2,10 @@ name := "fpis"
 
 version := "0.0.1"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.2"
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1"
 
-libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.12.5"
+libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.13.4"
 
 
